@@ -1,25 +1,42 @@
-import { StyleSheet, View } from 'react-native'
-import { RichEditor, RichToolbar } from 'react-native-pell-rich-editor'
-import { useRef } from 'react'
+import { StyleSheet, View, Text } from 'react-native'
+import { RichEditor, RichToolbar, actions } from 'react-native-pell-rich-editor'
+import { useRef, useState } from 'react'
 
 export default function AddNoteScreen() {
-  const richText = useRef(null)
+  const richTextRef = useRef(null)
+  const [text, setText] = useState('')
+
+  function handleRichChange(value) {
+    setText(value)
+  }
 
   return (
     <View style={styles.container}>
+      <Text>{text}</Text>
       <RichToolbar
-        editor={richText}
+        editor={richTextRef}
         selectedIconTint='white'
         iconTint='#6F7377'
         style={{ backgroundColor: '#2E3235' }}
+        actions={[
+          actions.setBold,
+          actions.setItalic,
+          actions.insertBulletsList,
+          actions.insertOrderedList,
+          actions.insertLink,
+          actions.setStrikethrough,
+          actions.setUnderline,
+        ]}
       />
       <RichEditor
-        ref={richText}
+        ref={richTextRef}
+        onChange={handleRichChange}
         placeholder='Enter your text here...'
         androidHardwareAccelerationDisabled={true}
         editorStyle={styles.editorStyle}
         style={styles.rich}
         initialHeight={250}
+        autoCorrect={false}
       />
     </View>
   )

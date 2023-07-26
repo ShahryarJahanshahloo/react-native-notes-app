@@ -10,12 +10,15 @@ import HomeScreen from './src/screens/HomeScreen'
 import AddNoteScreen from './src/screens/AddNoteScreen'
 import NoteScreen from './src/screens/NoteScreen'
 
+import { createTable } from './src/db/note'
+
+createTable()
 const Stack = createNativeStackNavigator()
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='AddNote'>
         <Stack.Screen
           name='Home'
           component={HomeScreen}

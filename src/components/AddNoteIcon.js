@@ -1,6 +1,7 @@
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import { useNavigation } from '@react-navigation/native'
+import { addNewNote } from '../db/note'
 
 export default function AddNoteIcon() {
   const navigation = useNavigation()
