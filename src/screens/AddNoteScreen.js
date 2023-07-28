@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native'
 import { RichEditor, RichToolbar, actions } from 'react-native-pell-rich-editor'
 import { useRef, useState } from 'react'
+import { addNewNote } from '../db/note'
 
 export default function AddNoteScreen() {
   const richTextRef = useRef(null)
