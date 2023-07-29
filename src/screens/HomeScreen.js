@@ -1,7 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import AddNoteIcon from '../components/AddNoteIcon'
+import { useTheme } from '@react-navigation/native'
 
 export default function HomeScreen() {
+  const { colors } = useTheme()
+  const styles = makeStyles(colors)
+
   return (
     <View style={styles.container}>
       <AddNoteIcon />
@@ -9,6 +13,8 @@ export default function HomeScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: { backgroundColor: '#2E3235', flex: 1 },
-})
+function makeStyles(colors) {
+  return StyleSheet.create({
+    container: { backgroundColor: colors.background, flex: 1 },
+  })
+}
