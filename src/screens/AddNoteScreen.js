@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { RichEditor, RichToolbar, actions } from 'react-native-pell-rich-editor'
 import { useRef, useState, useEffect } from 'react'
@@ -13,6 +14,7 @@ import { addNewNote } from '../db/note'
 export default function AddNoteScreen({ navigation }) {
   const richTextRef = useRef(null)
   const [text, setText] = useState('')
+  const [title, setTitle] = useState('Untitled')
   const { colors } = useTheme()
   const styles = makeStyles(colors)
 
@@ -38,11 +40,41 @@ export default function AddNoteScreen({ navigation }) {
     })
   }, [navigation])
 
+  function createTitleAlert() {
+    Alert.alert('maximum number of characters reached', undefined, undefined, {
+      cancelable: true,
+    })
+  }
+
+  function createRichAlert() {
+    Alert.alert('maximum number of characters reached', undefined, undefined, {
+      cancelable: true,
+    })
+  }
+
+  function handleTitleChange(value) {
+    if (value.length >= 32) {
+      createTitleAlert()
+      return
+    }
+    setTitle(value)
+  }
+
   function handleRichChange(value) {
+    if (value.length >= 2048) {
+      createRichAlert()
+      return
+    }
     setText(value)
   }
 
-  function handleSave() {}
+  async function handleSave() {
+    await addNewNote({
+      value: text,
+      title: title,
+    })
+    navigation.navigate('Home')
+  }
 
   function handleCancel() {
     navigation.navigate('Home')
@@ -51,9 +83,9 @@ export default function AddNoteScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <TextInput
-        placeholder='Untitled'
         style={styles.input}
-        placeholderTextColor={colors.textHighlighted}
+        onChangeText={handleTitleChange}
+        value={title}
       />
       <RichEditor
         ref={richTextRef}

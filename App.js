@@ -17,7 +17,7 @@ import darkTheme from './src/themes/darkTheme'
 createTable()
 const Stack = createNativeStackNavigator()
 
-const currentTheme = lightTheme
+const currentTheme = darkTheme
 
 export default function App() {
   return (
