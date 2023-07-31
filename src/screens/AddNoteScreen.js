@@ -11,15 +11,23 @@ import { useRef, useState, useEffect } from 'react'
 import { useTheme } from '@react-navigation/native'
 import { addNewNote } from '../db/note'
 
-export default function AddNoteScreen({ navigation }) {
+export default function AddNoteScreen({ navigation, route }) {
+  const { note } = route.params
   const richTextRef = useRef(null)
-  const [text, setText] = useState('')
-  const [title, setTitle] = useState('Untitled')
+  const [text, setText] = useState(note == undefined ? '' : note.value)
+  const [title, setTitle] = useState(
+    note == undefined ? 'Untitled' : note.title
+  )
   const { colors } = useTheme()
   const styles = makeStyles(colors)
 
   useEffect(() => {
+    const resetRichText = navigation.addListener('focus', () => {
+      richTextRef.current.setContentHTML(note == undefined ? '' : note.value)
+    })
+
     navigation.setOptions({
+      title: note == undefined ? 'New Note' : 'Edit Note',
       headerRight: () => {
         return (
           <TouchableOpacity style={styles.saveTouchable} onPress={handleSave}>
@@ -38,7 +46,9 @@ export default function AddNoteScreen({ navigation }) {
         )
       },
     })
-  }, [navigation])
+
+    return resetRichText
+  }, [navigation, note])
 
   function createTitleAlert() {
     Alert.alert('maximum number of characters reached', undefined, undefined, {
@@ -69,10 +79,14 @@ export default function AddNoteScreen({ navigation }) {
   }
 
   async function handleSave() {
-    await addNewNote({
-      value: text,
-      title: title,
-    })
+    if (note == undefined) {
+      await addNewNote({
+        value: text,
+        title: title,
+      })
+    } else {
+    }
+
     navigation.navigate('Home')
   }
 
@@ -91,6 +105,7 @@ export default function AddNoteScreen({ navigation }) {
         ref={richTextRef}
         onChange={handleRichChange}
         placeholder='Enter your text here...'
+        initialContentHTML={note ? note.value : null}
         androidHardwareAccelerationDisabled={true}
         editorStyle={styles.editorStyle}
         style={styles.rich}

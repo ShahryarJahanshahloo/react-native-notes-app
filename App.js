@@ -22,7 +22,7 @@ const currentTheme = darkTheme
 export default function App() {
   return (
     <NavigationContainer theme={currentTheme}>
-      <Stack.Navigator initialRouteName='AddNote'>
+      <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen
           name='Home'
           component={HomeScreen}
@@ -37,6 +37,7 @@ export default function App() {
         <Stack.Screen
           name='AddNote'
           component={AddNoteScreen}
+          initialParams={{ note: undefined }}
           options={{
             ...headerDefaultOptions,
             title: 'New Note',

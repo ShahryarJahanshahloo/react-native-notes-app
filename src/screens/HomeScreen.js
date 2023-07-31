@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native'
 import { useState, useEffect } from 'react'
 import { getAllNotes } from '../db/note'
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [notes, setNotes] = useState(null)
   const { colors } = useTheme()
   const styles = makeStyles(colors)
@@ -22,9 +22,16 @@ export default function HomeScreen() {
       <FlatList
         data={notes}
         renderItem={({ item }) => (
-          <View style={styles.noteView}>
-            <Text>{item.id}</Text>
-          </View>
+          <Pressable
+            onPress={() => {
+              navigation.navigate({ name: 'AddNote', params: { note: item } })
+            }}
+          >
+            <View style={styles.noteView}>
+              <Text style={styles.noteTitle}>{item.title}</Text>
+              <Text style={styles.noteText}>{item.value}</Text>
+            </View>
+          </Pressable>
         )}
         keyExtractor={item => item.id}
       />
@@ -35,7 +42,24 @@ export default function HomeScreen() {
 
 function makeStyles(colors) {
   return StyleSheet.create({
-    container: { backgroundColor: colors.background, flex: 1 },
-    noteView: {},
+    container: {
+      backgroundColor: colors.background,
+      flex: 1,
+      paddingVertical: 20,
+    },
+    noteView: {
+      paddingLeft: 20,
+    },
+    noteTitle: {
+      color: colors.textHighlighted,
+      paddingBottom: 12,
+      fontSize: 22,
+    },
+    noteText: {
+      color: colors.text,
+      paddingBottom: 12,
+      maxHeight: 100,
+      overflow: 'hidden',
+    },
   })
 }
