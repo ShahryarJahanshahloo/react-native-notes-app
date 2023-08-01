@@ -7,7 +7,7 @@ const GET_ALL_NOTES = 'SELECT * FROM notes;'
 const INSERT_NOTE = 'INSERT INTO notes (value, title) VALUES (?, ?);'
 const UPDATE_NOTE =
   'UPDATE notes SET value = ?, title = ?, updatedAt = ? WHERE id = ?;'
-const DELETE_NOTE = 'DELETE FROM TABLE WHERE id = ?;'
+const DELETE_NOTE = 'DELETE FROM notes WHERE id = ?;'
 
 export function createTable() {
   db.transaction(tx => {

@@ -10,7 +10,7 @@ import {
 import { RichEditor, RichToolbar, actions } from 'react-native-pell-rich-editor'
 import { useRef, useState, useEffect } from 'react'
 import { useTheme } from '@react-navigation/native'
-import { addNewNote, updateNote } from '../db/note'
+import { addNewNote, updateNote, deleteNote } from '../db/note'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default function NoteScreen({ navigation, route }) {
@@ -108,12 +108,18 @@ export default function NoteScreen({ navigation, route }) {
     navigation.navigate('Home')
   }
 
+  async function handleDelete() {
+    await deleteNote(note.id)
+    navigation.navigate('Home')
+  }
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         onChangeText={handleTitleChange}
         value={title}
+        multiline
       />
       <RichEditor
         ref={richTextRef}
@@ -142,11 +148,13 @@ export default function NoteScreen({ navigation, route }) {
             actions.setUnderline,
           ]}
         />
-        <Pressable>
+        {note == undefined ? null : (
           <View style={styles.iconWrapper}>
-            <Icon name='trash' size={24} color='white' />
+            <Pressable style={styles.iconPressable} onPress={handleDelete}>
+              <Icon name='trash' size={22} color={colors.trash} />
+            </Pressable>
           </View>
-        </Pressable>
+        )}
       </View>
     </View>
   )
@@ -172,18 +180,27 @@ function makeStyles(colors) {
     },
     saveText: {
       color: colors.text,
-      fontWeight: 'bold',
     },
     cancelTouchable: {},
-    cancelText: { color: colors.text, fontWeight: 'bold' },
-    toolbar: { flexDirection: 'row' },
+    cancelText: { color: colors.text },
+    toolbar: {
+      flexDirection: 'row',
+      paddingVertical: 6,
+      paddingHorizontal: 6,
+    },
     iconWrapper: {
+      alignSelf: 'stretch',
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+    },
+    iconPressable: {
       justifyContent: 'center',
       alignItems: 'center',
-      // flex: 1,
-      backgroundColor: 'red',
-      width: 40,
-      height: 40,
+      backgroundColor: colors.icon,
+      width: 36,
+      height: 36,
       borderRadius: 100,
     },
   })

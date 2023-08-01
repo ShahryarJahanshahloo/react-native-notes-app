@@ -53,12 +53,12 @@ function makeStyles(colors) {
       paddingVertical: 20,
     },
     noteView: {
-      paddingLeft: 20,
+      paddingHorizontal: 16,
     },
     noteTitle: {
       color: colors.textHighlighted,
       paddingBottom: 12,
-      fontSize: 22,
+      fontSize: 20,
     },
     noteText: {
       color: colors.text,
