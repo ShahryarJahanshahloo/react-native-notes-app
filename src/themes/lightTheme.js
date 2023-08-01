@@ -8,6 +8,7 @@ const lightTheme = {
     iconHighlighted: 'rgb(255, 69, 58)',
     plusIconBackground: 'rgb(32, 162, 206)',
     plusIconColor: 'rgb(146, 220, 238)',
+    seperator: 'black',
   },
 }
 

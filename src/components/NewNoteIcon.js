@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme } from '@react-navigation/native'
 
-export default function AddNoteIcon() {
+export default function NewNoteIcon() {
   const navigation = useNavigation()
   const { colors } = useTheme()
   const styles = makeStyles(colors)
@@ -12,7 +12,7 @@ export default function AddNoteIcon() {
     <TouchableOpacity
       title=''
       style={styles.container}
-      onPress={() => navigation.navigate('AddNote')}
+      onPress={() => navigation.navigate('Note')}
     >
       <Icon
         name='note'

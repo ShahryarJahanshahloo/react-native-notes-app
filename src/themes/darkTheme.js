@@ -8,6 +8,7 @@ const darkTheme = {
     iconHighlighted: '#fff',
     plusIconBackground: '#92B2C7',
     plusIconColor: '#2E3235',
+    separator: 'rgb(100, 100, 100)',
     // green: '#79A79E',
     // primary: '',
   },

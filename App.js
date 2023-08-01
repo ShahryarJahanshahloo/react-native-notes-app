@@ -7,7 +7,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import HomeScreen from './src/screens/HomeScreen'
-import AddNoteScreen from './src/screens/AddNoteScreen'
 import NoteScreen from './src/screens/NoteScreen'
 
 import { createTable } from './src/db/note'
@@ -35,18 +34,17 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name='AddNote'
-          component={AddNoteScreen}
+          name='Note'
+          component={NoteScreen}
           initialParams={{ note: undefined }}
           options={{
             ...headerDefaultOptions,
             title: 'New Note',
-            headerStyle: styles.addNoteHeaderStyle,
+            headerStyle: styles.NoteHeaderStyle,
             headerRight: SaveButton,
             headerLeft: CancelButton,
           }}
         />
-        <Stack.Screen name='Note' component={NoteScreen} />
       </Stack.Navigator>
       <StatusBar style='auto' />
     </NavigationContainer>
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: currentTheme.colors.background,
     marginTop: Constants.statusBarHeight,
   },
-  addNoteHeaderStyle: {
+  NoteHeaderStyle: {
     backgroundColor: currentTheme.colors.background,
   },
   saveTouchable: {

@@ -1,21 +1,25 @@
 import { StyleSheet, View, FlatList, Pressable, Text } from 'react-native'
-import AddNoteIcon from '../components/AddNoteIcon'
+import NewNoteIcon from '../components/NewNoteIcon'
 import { useTheme } from '@react-navigation/native'
 import { useState, useEffect } from 'react'
 import { getAllNotes } from '../db/note'
+import { useIsFocused } from '@react-navigation/native'
 
 export default function HomeScreen({ navigation }) {
   const [notes, setNotes] = useState(null)
   const { colors } = useTheme()
   const styles = makeStyles(colors)
+  const isFocused = useIsFocused()
 
   useEffect(() => {
-    const fetch = async () => {
-      const notes = await getAllNotes()
-      setNotes(notes)
+    if (isFocused) {
+      const fetch = async () => {
+        const notes = await getAllNotes()
+        setNotes(notes)
+      }
+      fetch()
     }
-    fetch()
-  }, [])
+  }, [isFocused])
 
   return (
     <View style={styles.container}>
@@ -24,7 +28,7 @@ export default function HomeScreen({ navigation }) {
         renderItem={({ item }) => (
           <Pressable
             onPress={() => {
-              navigation.navigate({ name: 'AddNote', params: { note: item } })
+              navigation.navigate({ name: 'Note', params: { note: item } })
             }}
           >
             <View style={styles.noteView}>
@@ -33,9 +37,10 @@ export default function HomeScreen({ navigation }) {
             </View>
           </Pressable>
         )}
+        ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         keyExtractor={item => item.id}
       />
-      <AddNoteIcon />
+      <NewNoteIcon />
     </View>
   )
 }
@@ -60,6 +65,13 @@ function makeStyles(colors) {
       paddingBottom: 12,
       maxHeight: 100,
       overflow: 'hidden',
+    },
+    separator: {
+      borderBottomWidth: 0.5,
+      borderColor: colors.separator,
+      paddingTop: 20,
+      marginBottom: 20,
+      marginHorizontal: 20,
     },
   })
 }
