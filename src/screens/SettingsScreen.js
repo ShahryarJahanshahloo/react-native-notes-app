@@ -3,13 +3,15 @@ import { Picker } from '@react-native-picker/picker'
 import { useContext } from 'react'
 import ThemeContext from '../context/ThemeContext'
 import { useTheme } from '@react-navigation/native'
+import { setItemAsync } from 'expo-secure-store'
 
 export default function SettingsScreen() {
   const { theme, setTheme } = useContext(ThemeContext)
   const { colors } = useTheme()
   const styles = makeStyles(colors)
 
-  function handleThemeChange(value, index) {
+  async function handleThemeChange(value, index) {
+    await setItemAsync('theme', value)
     setTheme(value)
   }
 

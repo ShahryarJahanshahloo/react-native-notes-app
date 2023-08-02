@@ -89,6 +89,12 @@ export default function NoteScreen({ navigation, route }) {
 
   async function handleSave() {
     if (note == undefined) {
+      if (title.trim() == '' || !text) {
+        Alert.alert('title or text cant be empty', undefined, undefined, {
+          cancelable: true,
+        })
+        return
+      }
       await addNewNote({
         value: text,
         title: title,
@@ -109,8 +115,28 @@ export default function NoteScreen({ navigation, route }) {
   }
 
   async function handleDelete() {
-    await deleteNote(note.id)
-    navigation.navigate('Home')
+    Alert.alert(
+      'Are you sure you want to delete this note?',
+      undefined,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          onPress: async () => {
+            await deleteNote(note.id)
+            navigation.navigate('Home')
+          },
+          style: 'destructive',
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    )
   }
 
   return (

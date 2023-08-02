@@ -4,7 +4,8 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getItemAsync, setItemAsync } from 'expo-secure-store'
 
 import HomeScreen from './src/screens/HomeScreen'
 import NoteScreen from './src/screens/NoteScreen'
@@ -14,11 +15,11 @@ import { createTable } from './src/db/note'
 import lightTheme from './src/themes/lightTheme'
 import darkTheme from './src/themes/darkTheme'
 import ThemeContext from './src/context/ThemeContext'
+
 const themes = {
   dark: darkTheme,
   light: lightTheme,
 }
-
 createTable()
 const Stack = createNativeStackNavigator()
 
@@ -26,6 +27,18 @@ export default function App() {
   const [theme, setTheme] = useState('dark')
   const currentTheme = themes[theme]
   const styles = makeStyles(currentTheme.colors)
+
+  useEffect(() => {
+    const fetch = async () => {
+      const storedTheme = await getItemAsync('theme')
+      if (!storedTheme) {
+        await setItemAsync('theme', 'dark')
+      } else {
+        setTheme(storedTheme)
+      }
+    }
+    fetch()
+  }, [])
 
   const headerDefaultOptions = {
     headerShadowVisible: false,
